@@ -1383,12 +1383,15 @@ void AddBattlegroundScripts()
 
 #ifdef SCRIPTS
 /* This is where custom scripts' loading functions should be declared. */
-
+void AddSC_cs_world_chat();
+void AddSC_DuelReset();
 #endif
 
 void AddCustomScripts()
 {
 #ifdef SCRIPTS
+	AddSC_cs_world_chat();
     AddSC_event_april();
+	AddSC_DuelReset();
 #endif
 }
