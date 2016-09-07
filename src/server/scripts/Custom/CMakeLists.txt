@@ -12,6 +12,7 @@ set(scripts_STAT_SRCS
   ${scripts_STAT_SRCS}
 	Custom/event_april.cpp
 	Custom/duel_reset.cpp
+	Custom/world_chat.cpp
 )
 
 message("  -> Prepared: Custom")
