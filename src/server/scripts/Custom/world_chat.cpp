@@ -1,23 +1,28 @@
+/*
+Made by: MoltenX
+!DO NOT RELEASE WITHOUT PERMISSIONS!
+*/
+
 #include "ScriptPCH.h"
 #include "Chat.h"
 
 class cs_world_chat : public CommandScript
 {
 public:
-	cs_world_chat() : CommandScript("cs_world_chat"){}
+	cs_world_chat() : CommandScript("chat"){}
 
 	ChatCommand * GetCommands() const
 	{
-		static ChatCommand WorldChatCommandTable[] =
+		static ChatCommand ChatCommandTable[] =
 		{
-			{ "chat", SEC_PLAYER, true, &HandleWorldChatCommand, "", NULL },
+			{ "chat", SEC_PLAYER, true, &HandleChatCommand, "", NULL },
 			{ NULL, 0, false, NULL, "", NULL }
 		};
 
-		return WorldChatCommandTable;
+		return ChatCommandTable;
 	}
 
-	static bool HandleWorldChatCommand(ChatHandler * handler, const char * args)
+	static bool HandleChatCommand(ChatHandler * handler, const char * args)
 	{
 		if (!args)
 			return false;
@@ -27,41 +32,60 @@ public:
 
 		switch (player->GetSession()->GetSecurity())
 		{
-			// Player
 		case SEC_PLAYER:
 			if (player->GetTeam() == ALLIANCE)
 			{
-				msg += "|cff0000ff[Alliance] |cffffffff[";
+				msg += "|cff00ff00[A] |cffffffff[";
 				msg += player->GetName();
-				msg += "] |cfffaeb00";
+				msg += "] |cffB400B4";
 			}
-
-			if (player->GetTeam() == HORDE)
+			else
 			{
-				msg += "|cffff0000[Horde] |cffffffff[";
+				msg += "|cffff0000[H] |cffffffff[";
 				msg += player->GetName();
-				msg += "] |cfffaeb00";
+				msg += "] |cffB400B4";
 			}
 			break;
-			// Moderator/trial 
+		case SEC_VIP:
+			msg += "|cffff8a00[VIP] |cffffffff[";
+			msg += player->GetName();
+			msg += "] |cffB400B4";
+			break;
 		case SEC_MODERATOR:
-			msg += "|cffff8a00[Mod] |cffffffff[";
+			msg += "|cff00ffff[Trial GM] |cffffffff[";
 			msg += player->GetName();
-			msg += "] |cfffaeb00";
+			msg += "] |cffB400B4";
 			break;
-			// GM
 		case SEC_GAMEMASTER:
-			msg += "|cff00ffff[GM] |cffffffff[";
+			msg += "|cfffa9900[GM] |cffffffff[";
 			msg += player->GetName();
-			msg += "] |cfffaeb00";
+			msg += "] |cffB400B4";
 			break;
-			// Admin
+		case SEC_CONFIRMED_GAMEMASTER:
+			msg += "|cfffa9900[Senior GM] |cffffffff[";
+			msg += player->GetName();
+			msg += "] |cffB400B4";
+			break;
+		case SEC_REALM_LEADER:
+			msg += "|cfffa9900[Head GM] |cffffffff[";
+			msg += player->GetName();
+			msg += "] |cffB400B4";
+			break;
+		case SEC_GM_LEADER:
+			msg += "|cfffa9900[DEV] |cffffffff[";
+			msg += player->GetName();
+			msg += "] |cffB400B4";
+			break;
 		case SEC_ADMINISTRATOR:
 			msg += "|cfffa9900[Admin] |cffffffff[";
 			msg += player->GetName();
-			msg += "] |cfffaeb00";
+			msg += "] |cffB400B4";
 			break;
-
+		case SEC_CONSOLE:
+			msg += "|cfffa9900[Owner] |cffffffff[";
+			msg += player->GetName();
+			msg += "] |cffB400B4";
+			break;
 		}
 
 		msg += args;
